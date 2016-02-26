@@ -1,7 +1,7 @@
-Minecraft: PE Server Software
+Minecraft: PE Server Software, Aerial.
 
-Fork of Genysi - PocketMine-MP.
-
+Fork of Genysis - PocketMine-MP.
+Code may have been used from other softwares, Visit Genysis Github to view them.
 Desgined for server performance.
 
 Features:
