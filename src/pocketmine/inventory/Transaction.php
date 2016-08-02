@@ -48,4 +48,9 @@ interface Transaction{
 	 * @return float
 	 */
 	public function getCreationTime();
+	
+	/**
+	 * @return bool
+	 */
+	public function execute(): bool;
 }
