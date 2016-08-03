@@ -21,6 +21,7 @@
 
 namespace pocketmine\inventory;
 
+use pocketmine\Player;
 use pocketmine\item\Item;
 
 interface Transaction{
@@ -50,7 +51,8 @@ interface Transaction{
 	public function getCreationTime();
 	
 	/**
+	 * @param Player $source
 	 * @return bool
 	 */
-	public function execute(): bool;
+	public function execute(Player $source): bool;
 }
