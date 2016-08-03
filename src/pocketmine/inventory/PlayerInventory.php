@@ -62,9 +62,9 @@ class PlayerInventory extends BaseInventory{
 						/* If TrueSlot is not set, leave the slot index as its default which was filled in above
 						 * This only overwrites slot indexes for valid links */
 					}elseif($item["Slot"] >= 100 and $item["Slot"] < 104){ //Armor
-						$this->setItem($this->getSize() + $item["Slot"] - 100, NBT::getItemHelper($item));
+						$this->setItem($this->getSize() + $item["Slot"] - 100, NBT::getItemHelper($item), false);
 					}else{
-						$this->setItem($item["Slot"] - $this->getHotbarSize(), NBT::getItemHelper($item));
+						$this->setItem($item["Slot"] - $this->getHotbarSize(), NBT::getItemHelper($item), false);
 					}
 				}
 			}else{
@@ -472,13 +472,18 @@ class PlayerInventory extends BaseInventory{
 		for($i = 0; $i < $this->getSize(); ++$i){ //Do not send armor by error here
 			$pk->slots[$i] = $this->getItem($i);
 		}
+		
+		//Because PE is stupid and shows 9 less slots than you send it, give it 9 dummy slots so it shows all the REAL slots.
+		for($i = $this->getSize(); $i < $this->getSize() + $this->getHotbarSize(); ++$i){
+			$pk->slots[$i] = Item::get(Item::AIR, 0, 0);
+		}
 
 		foreach($target as $player){
 			$pk->hotbar = [];
 			if($player === $this->getHolder()){
 				for($i = 0; $i < $this->getHotbarSize(); ++$i){
 					$index = $this->getHotbarSlotIndex($i);
-					$pk->hotbar[] = $index + $this->getHotbarSize();
+					$pk->hotbar[$i] = ($index >= 0 ? $index + $this->getHotbarSize() : -1);
 				}
 			}
 			if(($id = $player->getWindowId($this)) === -1 or $player->spawned !== true){
