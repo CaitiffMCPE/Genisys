@@ -131,8 +131,15 @@ class PlayerInventory extends BaseInventory{
 			if($slotMapping !== null){ 
 				/* Handle a hotbar slot mapping change. This allows PE to select different inventory slots.
 				 * This is the only time slot mapping should ever be changed. */
-				if(($key = array_search($slotMapping, $this->hotbar)) !== false){
-					/* Chosen slot is already linked to a hotbar slot, swap the two slots around.
+				
+				if($slotMapping < 0 or $slotMapping >= $this->getSize()){
+					//Mapping was not in range of the inventory, set it to -1
+					//This happens if the client selected a blank slot (sends 255)
+					$slotMapping = -1;
+					
+				}elseif(($key = array_search($slotMapping, $this->hotbar)) !== false){
+					/* Do not do slot swaps if the slot was null
+					 * Chosen slot is already linked to a hotbar slot, swap the two slots around.
 					 * This will already have been done on the client-side so no changes need to be sent. */
 					$this->hotbar[$key] = $this->hotbar[$this->itemInHandIndex];					
 				}
